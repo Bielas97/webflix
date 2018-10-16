@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+
+    <title>Login page</title>
+</head>
+<body>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
+            <form th:action="@{/app-login}" method="post">
+                <div class="form-group">
+                    <label class="h3" for="username">Użytkownik:</label>
+                    <input id="username" class="form-control" type="text" name="username" placeholder="wpisz nazwe użytkownika" required/>
+                </div>
+                <div class="form-group">
+                    <label class="h3" for="password">Hasło:</label>
+                    <input id="password" class="form-control" type="password" name="password" placeholder="wpisz hasło" required/>
+                </div>
+                <div>
+                    <input class="btn btn-success btn btn-block" type="submit" value="Login"/>
+                </div>
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                />
+            </form>
+            <h1 th:text="${error}"></h1>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>
