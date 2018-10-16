@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MyController {
+public class BasicController {
 
     @GetMapping("/")
     public String index(){
@@ -16,5 +16,12 @@ public class MyController {
     public String login(Model model) {
         model.addAttribute("error", "");
         return "loginForm";
+    }
+
+
+
+    @GetMapping("/register")
+    public String register(){
+        return "register";
     }
 }
