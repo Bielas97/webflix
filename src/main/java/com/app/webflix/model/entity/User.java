@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,4 +25,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDateTime dateTime;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "watchList",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "multimedia_id") }
+    )
+    private List<Multimedia> watchList;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 }

@@ -16,8 +16,13 @@
         <div class="col-9">
 
             <div class="list-group">
-                <a href="/showCustomers" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <p class="mb-1">Change my credentials</p>
+                <a href="/showMovies" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Movies</h5>
+                        <small class="text-muted">all</small>
+                    </div>
+                    <p class="mb-1">Show all movies</p>
+                    <small>show details</small>
                 </a>
                 <a href="/tickets" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
@@ -52,12 +57,10 @@
         </div>
         <div class="col-2">
             Zalogowany jako <p th:text="${user}"></p>
-            liczba dostępnych biletów:
-            <p th:text="${numberOfTickets}"></p>
         </div>
         <div>
             <form th:action="@{/app-logout}" method="post">
-                <input class="btn btn-danger" type="submit" value="Wyloguj" />
+                <input class="btn btn-danger" type="submit" value="Log out" />
             </form>
         </div>
     </div>

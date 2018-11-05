@@ -6,22 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MultimediaDto {
+public class PaymentDto {
     private Long id;
-    private String name;
-    private String genre;
-    private String director;
-    private LocalDateTime dateTime;
-    private String description;
-    private Integer episodeNumber;
-    private Integer rating;
-    private List<User> users;
-
+    private Double value;
+    private Boolean isPaid;
+    private LocalDateTime dueDate;
+    private User user;
 }
