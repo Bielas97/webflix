@@ -1,25 +1,20 @@
-package com.app.webflix.model;
+package com.app.webflix.model.dto;
 
 import com.app.webflix.model.enums.Role;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import java.time.LocalDateTime;
 
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Builder
-public class User {
-    @Id
-    @GeneratedValue
+public class UserDto {
     private Long id;
     private String username;
-    private String mail;
-    private String phoneNumber;
-    @Enumerated(EnumType.STRING)
+    private String password;
+    private String creditCard;
     private Role role;
+    private LocalDateTime dateTime;
 }

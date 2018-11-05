@@ -1,6 +1,6 @@
 package com.app.webflix.controllers;
 
-import com.app.webflix.model.User;
+import com.app.webflix.model.dto.UserDto;
 import com.app.webflix.model.enums.Role;
 import com.app.webflix.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,7 @@ public class BasicController {
         this.userService = userService;
     }
 
+
     @GetMapping("/")
     public String index(){
         return "index";
@@ -31,13 +32,13 @@ public class BasicController {
 
     @GetMapping("/register")
     public String registerUser(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
         model.addAttribute("roles", Role.values());
         return "register";
     }
 
     @PostMapping
-    public String registerUserPost(@ModelAttribute User user){
+    public String registerUserPost(@ModelAttribute UserDto user, Model model){
         userService.addOrUpdateUser(user);
         return "redirect:/";
     }
