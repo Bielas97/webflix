@@ -10,8 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-    void addOrUpdatePayment(PaymentDto paymentDto);
-    void deletePayment(Long id);
-    Optional<PaymentDto> getOnePayment(Long id);
-    List<PaymentDto> getAll();
+    
 }
