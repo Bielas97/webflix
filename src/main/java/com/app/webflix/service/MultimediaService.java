@@ -34,4 +34,8 @@ public class MultimediaService {
     public Optional<MultimediaDto> getOneMultimedia(Long id){
         return multimediaRepository.findById(id).map(m -> modelMapper.map(m, MultimediaDto.class));
     }
+
+    public MultimediaDto getByGenre(String genre){
+        return modelMapper.map(multimediaRepository.findByGenre(genre), MultimediaDto.class);
+    }
 }

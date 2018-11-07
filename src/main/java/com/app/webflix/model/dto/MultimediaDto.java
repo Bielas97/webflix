@@ -1,10 +1,7 @@
 package com.app.webflix.model.dto;
 
 import com.app.webflix.model.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +19,8 @@ public class MultimediaDto {
     private String description;
     private Integer episodeNumber;
     private Integer rating;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<User> users;
 
 }

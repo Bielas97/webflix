@@ -19,10 +19,10 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    //username jest mailem
     private String username;
     private String password;
     private String creditCard;
-    private String mail;
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDateTime dateTime;

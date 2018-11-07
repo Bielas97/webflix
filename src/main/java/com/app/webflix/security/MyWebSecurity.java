@@ -56,10 +56,11 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/admin/registration").hasAnyRole(String.valueOf(Role.ADMIN))
                 .antMatchers("/register").permitAll()
+                .antMatchers("/deleteUser").permitAll()
                 .anyRequest()
                 .authenticated()
-
 
                 .and()
                 .formLogin()

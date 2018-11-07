@@ -19,8 +19,10 @@ public class UserDto {
     private String username;
     private String password;
     private String creditCard;
-    private String mail;
     private Role role;
     private LocalDateTime dateTime;
-    private List<Multimedia> watchList;
+
+    private List<MultimediaDto> watchList;
+
+    private List<String> favouriteGenre;
 }

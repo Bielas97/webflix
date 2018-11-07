@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>watchList</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+</head>
+<body>
+
+
+<div th:if="${!isnull}">
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">name</th>
+                        <th scope="col">genre</th>
+                        <th scope="col">date of publication</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody th:if="${!movies.isEmpty()}">
+                    <tr th:each="c : ${movies}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.name}"></td>
+                        <td th:text="${c.genre}"></td>
+                        <td th:text="${c.dateTime}"></td>
+                        <td>
+                            <a class="btn btn-primary mr-2"
+                               th:href="@{/showMovie/{id}(id=${c.id})}">details</a>
+                            <a class="btn btn-danger"
+                               th:href="@{/remove/from/watchlist/{id}(id=${c.id})}">delete from watchlist</a>
+                        </td>
+                        <!--            <td>
+                                        <a class="btn btn-danger mr-2"
+                                           onclick="return confirm('UWAGA! usuwasz stolik. Czy chcesz kontynuować?');"
+                                           th:href="@{/customer/remove/{id}(id=${c.id})}">usuń</a>
+                                    </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" href="/">Main Page</a>
+
+            </div>
+            <div>
+                <form th:action="@{/app-logout}" method="post">
+                    <input class="btn btn-danger" type="submit" value="Log out"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:if="${isnull}">
+    <h3>You have no watch list</h3>
+    <a class="btn btn-primary" href="/">Main Page</a>
+
+    <div>
+        <form th:action="@{/app-logout}" method="post">
+            <input class="btn btn-danger" type="submit" value="Log out"/>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>

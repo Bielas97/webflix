@@ -34,7 +34,7 @@ public class WebflixApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		if (userRepository.count() == 0) {
-			userRepository.save(User.builder().username("mail").password(passwordEncoder.encode("1234")).creditCard("312132").dateTime(LocalDateTime.now()).role(Role.MANAGER).build());
+			userRepository.save(User.builder().username("mail").password(passwordEncoder.encode("1234")).creditCard("312132").dateTime(LocalDateTime.now()).role(Role.ADMIN).build());
 		}
 	}
 }

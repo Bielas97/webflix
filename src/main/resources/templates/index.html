@@ -24,39 +24,38 @@
                     <p class="mb-1">Show all movies</p>
                     <small>show details</small>
                 </a>
-                <a href="/tickets" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="/suggestedContent" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Bilety</h5>
-                        <small class="text-muted">Wszyscy, Administrator</small>
+                        <h5 class="mb-1">Suggested content</h5>
+                        <small class="text-muted">all</small>
                     </div>
-                    <p class="mb-1">Pokaż wszystkie rodzaje biletów</p>
-                    <small>Dodaj, zmodyfikuj, usuń - administrator</small>
+                    <p class="mb-1">Show suggested content</p>
                 </a>
-                <a href="/users" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="/watchList" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Sprzedawcy</h5>
-                        <small class="text-muted">Wszyscy</small>
+                        <h5 class="mb-1">WatchList</h5>
+                        <small class="text-muted">all</small>
                     </div>
-                    <p class="mb-1">Pokaż wszystkich sprzedawców</p>
+                    <p class="mb-1">Show your watchList</p>
                 </a>
-                <a href="/register" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="/admin/registration" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Nowy sprzedawca</h5>
-                        <small class="text-muted">Administrator</small>
+                        <h5 class="mb-1">register</h5>
+                        <small class="text-muted">admin</small>
                     </div>
-                    <p class="mb-1">Zarejestruj nowego sprzedawcę</p>
+                    <p class="mb-1">register new admin</p>
                 </a>
-                <a href="/tables" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="/deleteUser" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Zajmij stoliki</h5>
-                        <small class="text-muted">Administrator</small>
+                        <h5 class="mb-1">delete</h5>
+                        <small class="text-muted">Ddelete my account</small>
                     </div>
-                    <p class="mb-1">Zarezerwuj miejsca dla vipów, beściaków...</p>
+                    <p class="mb-1">you can delete your accoun here</p>
                 </a>
             </div>
         </div>
         <div class="col-2">
-            Zalogowany jako <p th:text="${user}"></p>
+            logged in as: <p th:text="${user}"></p>
         </div>
         <div>
             <form th:action="@{/app-logout}" method="post">

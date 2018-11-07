@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>register</title>
+    <title>registerAdmin</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
             <h2 class="mt-5">Register</h2>
-            <form th:action="@{/register}" method="post" th:object="${user}">
+            <form th:action="@{/registerAdmin}" method="post" th:object="${user}">
                 <div class="form-group">
                     <label class="h3" for="name">Mail:</label>
                     <input id="name" class="form-control" type="text" th:field="*{username}"/>
@@ -27,7 +27,6 @@
                     <label class="h3" for="numberOfTickets">Credit Card</label>
                     <input id="numberOfTickets" class="form-control" type="number" th:field="*{creditCard}"/>
                 </div>
-
                 <div>
                     <input class="btn btn-success" type="submit" value="Register"/>
                     <input class="btn btn-danger" type="reset" value="Reset"/>

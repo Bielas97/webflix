@@ -1,9 +1,6 @@
 package com.app.webflix.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,6 +23,8 @@ public class Multimedia {
     private Integer episodeNumber;
     private Integer rating;
     @ManyToMany(mappedBy = "watchList", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<User> users;
 
 }
