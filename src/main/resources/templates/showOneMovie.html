@@ -35,7 +35,9 @@
     </tbody>
 </table>
 <a class="btn btn-primary" href="/">Main Page</a>
-<input class="btn btn-success" type="submit" value="Add to watch list"/>
+<form th:action="@{/showMovie}" method="post">
+    <input class="btn btn-success" type="submit" value="Add to watch list"/>
+</form>
 
 
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"

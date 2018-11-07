@@ -59,12 +59,6 @@ public class BasicController {
         return "getAllMovies";
     }
 
-    @GetMapping("/movie/show/{id}")
-    public String showOneMovie(@PathVariable Long id, Model model){
-        model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
-        return "showOneMovie";
-    }
-
     @GetMapping("/addMultimedia")
     public String addMultimedia(Model model){
         model.addAttribute("movie", new MultimediaDto());
@@ -79,7 +73,13 @@ public class BasicController {
         return "redirect:/";
     }
 
-    @PostMapping("/movie/show/{id}")
+    @GetMapping("/showMovie/{id}")
+    public String showOneMovie(@PathVariable Long id, Model model){
+        model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
+        return "showOneMovie";
+    }
+
+    @PostMapping("/showMovie/{id}")
     public String toWatchList(@PathVariable Long id, Principal principal){
         System.out.println("++++++++++++++++++++++");
         multimediaService.getOneMultimedia(id).ifPresent(multimediaDto -> {
