@@ -69,7 +69,8 @@ public class BasicController {
     @PostMapping("/admin/registration")
     public String registerAdminPost(@ModelAttribute UserDto user, Model model) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.MANAGER);
+        user.setRole(Role.ADMIN);
+        System.out.println(user);
         userService.addOrUpdateUser(user);
         return "redirect:/";
     }

@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
             <h2 class="mt-5">Register</h2>
-            <form th:action="@{/registerAdmin}" method="post" th:object="${user}">
+            <form th:action="@{/admin/registration}" method="post" th:object="${user}">
                 <div class="form-group">
                     <label class="h3" for="name">Mail:</label>
                     <input id="name" class="form-control" type="text" th:field="*{username}"/>
