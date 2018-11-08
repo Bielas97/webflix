@@ -1,6 +1,7 @@
 package com.app.webflix.security;
 
 import com.app.webflix.model.enums.Role;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +28,14 @@ import java.io.IOException;
 @EnableGlobalMethodSecurity
 public class MyWebSecurity extends WebSecurityConfigurerAdapter{
     private UserDetailsService userDetailsService;
-
+    private static final Logger LOGGER = Logger.getLogger(MyWebSecurity.class);
     public MyWebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        LOGGER.info("Configuring authentication service");
         auth
                 .inMemoryAuthentication()
                 .withUser("user").password(passwordEncoder().encode("1234")).roles(String.valueOf(Role.MANAGER));

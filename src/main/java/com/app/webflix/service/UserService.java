@@ -4,6 +4,7 @@ import com.app.webflix.model.dto.MultimediaDto;
 import com.app.webflix.model.dto.UserDto;
 import com.app.webflix.model.entity.User;
 import com.app.webflix.repository.UserRepository;
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UserService {
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private MultimediaService multimediaService;
+    private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository, ModelMapper modelMapper, MultimediaService multimediaService) {
         this.userRepository = userRepository;
@@ -26,12 +28,17 @@ public class UserService {
     }
 
     public void addOrUpdateUser(UserDto userDto) {
+        LOGGER.info("Adding/updating user");
+        LOGGER.debug("Setting user's "+userDto.getUsername()+" date of account creation");
         userDto.setDateTime(LocalDateTime.now());
+        LOGGER.debug("Saving user in the database");
         userRepository.save(modelMapper.map(userDto, User.class));
     }
 
     public void addToWatchList(UserDto userDto, MultimediaDto multimediaDto) {
+        LOGGER.info("Adding "+multimediaDto.getName()+" to "+userDto.getUsername()+"'s watchlist");
         if (userDto.getWatchList() == null) {
+            LOGGER.debug("Empty watchlist, creating arraylist");
             List<MultimediaDto> multimedias = new ArrayList<>();
             multimedias.add(multimediaDto);
             userDto.setWatchList(multimedias);
@@ -39,18 +46,23 @@ public class UserService {
         if (!userDto.getWatchList().contains(multimediaDto)) {
             userDto.getWatchList().add(multimediaDto);
             addOrUpdateUser(userDto);
+        }else{
+            LOGGER.error("Error adding movie to watchlist, probably exists there");
         }
     }
 
     public UserDto getByUsername(String username) {
+        LOGGER.info("Getting "+username+" info");
         return modelMapper.map(userRepository.findByUsername(username), UserDto.class);
     }
 
     public void deleteUserbyUsername(String username) {
+        LOGGER.info("Deleting "+username);
         userRepository.deleteByUsername(username);
     }
 
     public List<UserDto> getAll() {
+        LOGGER.info("Getting all users");
         return userRepository.findAll()
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
@@ -58,10 +70,12 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
+        LOGGER.info("Deleting user by id:"+id);
         userRepository.deleteById(id);
     }
 
     public void remove(UserDto userDto) {
+        LOGGER.info("Removing user "+userDto.getUsername());
         userRepository.delete(modelMapper.map(userDto, User.class));
     }
 
@@ -81,6 +95,7 @@ public class UserService {
     }
 
     public void deleteFromWatchList(UserDto userDto, Long id){
+        LOGGER.info("Deleting from "+userDto.getUsername()+"'s watchlist:"+id);
         Optional<MultimediaDto> multimediaDto = multimediaService.getOneMultimedia(id);
         multimediaDto.ifPresent(multimediaDto1 -> userDto.getWatchList().remove(multimediaDto1));
         addOrUpdateUser(userDto);
