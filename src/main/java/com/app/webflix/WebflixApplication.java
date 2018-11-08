@@ -3,6 +3,7 @@ package com.app.webflix;
 import com.app.webflix.model.entity.User;
 import com.app.webflix.model.enums.Role;
 import com.app.webflix.repository.UserRepository;
+import com.app.webflix.service.EmailServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,4 +38,5 @@ public class WebflixApplication implements CommandLineRunner {
 			userRepository.save(User.builder().username("mail").password(passwordEncoder.encode("1234")).creditCard("312132").dateTime(LocalDateTime.now()).role(Role.ADMIN).build());
 		}
 	}
+
 }

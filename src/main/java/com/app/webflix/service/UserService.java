@@ -1,6 +1,7 @@
 package com.app.webflix.service;
 
 import com.app.webflix.model.dto.MultimediaDto;
+import com.app.webflix.model.dto.PaymentDto;
 import com.app.webflix.model.dto.UserDto;
 import com.app.webflix.model.entity.User;
 import com.app.webflix.repository.UserRepository;
@@ -18,11 +19,13 @@ public class UserService {
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private MultimediaService multimediaService;
+    private EmailServiceImpl emailService;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, MultimediaService multimediaService) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, MultimediaService multimediaService, EmailServiceImpl emailService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.multimediaService = multimediaService;
+        this.emailService = emailService;
     }
 
     public void addOrUpdateUser(UserDto userDto) {
@@ -84,6 +87,22 @@ public class UserService {
         Optional<MultimediaDto> multimediaDto = multimediaService.getOneMultimedia(id);
         multimediaDto.ifPresent(multimediaDto1 -> userDto.getWatchList().remove(multimediaDto1));
         addOrUpdateUser(userDto);
+    }
+
+    public void setPayment(UserDto user) {
+        PaymentDto paymentDto = PaymentDto.builder()
+                .value(99.99)
+                .dueDate(LocalDateTime.now().plusDays(1))
+                .isPaid(false)
+                .user(user)
+                .build();
+        user.setPayment(paymentDto);
+    }
+
+    public void sendMessageAboutPayment(UserDto userDto){
+        if(userDto.getPayment().getDueDate().isAfter(LocalDateTime.now()) && !userDto.getPayment().getIsPaid()){
+            emailService.sendSimpleMessage(userDto.getUsername(), "WEBFLIX", "Your account is expired, please pay 99.99 US $");
+        }
     }
 
 }

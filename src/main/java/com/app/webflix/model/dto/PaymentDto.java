@@ -18,5 +18,5 @@ public class PaymentDto {
     private Double value;
     private Boolean isPaid;
     private LocalDateTime dueDate;
-    private User user;
+    private UserDto user;
 }
