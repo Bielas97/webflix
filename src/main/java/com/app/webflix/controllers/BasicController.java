@@ -105,6 +105,25 @@ public class BasicController {
         return "showOneMovie";
     }
 
+    @GetMapping("/updateMovie/{id}")
+    public String updateMovie(@PathVariable Long id, Model model){
+        model.addAttribute("movie",multimediaService.getOneMultimedia(id));
+        return "updateMovie";
+    }
+
+    @PostMapping("/updateMovie")
+    public String updateMoviePost(MultimediaDto multimediaDto){
+        multimediaDto.setDateTime(LocalDateTime.now());
+        multimediaService.addOrUpdateMultimedia(multimediaDto);
+        return "redirect:/showMovies";
+    }
+
+    @GetMapping("/deleteMovie/{id")
+    public String deleteMovie(@PathVariable Long id){
+        multimediaService.deleteMultimedia(id);
+        return "redirect:/showMovies";
+    }
+
     @GetMapping("/movie/toWatchlist/{id}")
     public String addToWatchList(@PathVariable Long id, Principal principal){
         System.out.println("+++++++++++");

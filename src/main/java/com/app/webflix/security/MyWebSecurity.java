@@ -57,6 +57,8 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                 .antMatchers("/admin/registration").hasAnyRole(String.valueOf(Role.ADMIN))
+                .antMatchers("/updateMovie").hasAnyRole(String.valueOf(Role.ADMIN))
+                .antMatchers("/deleteMovie").hasAnyRole(String.valueOf(Role.ADMIN))
                 .antMatchers("/register").permitAll()
                 .antMatchers("/deleteUser").permitAll()
                 .anyRequest()

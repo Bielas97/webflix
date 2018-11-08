@@ -32,6 +32,10 @@
             <td>
                 <a class="btn btn-primary mr-2"
                    th:href="@{/showMovie/{id}(id=${c.id})}">details</a>
+                <a class="btn btn-primary mr-2"
+                   th:href="@{/updateMovie/{id}(id=${c.id})}">update</a>
+                <a class="btn btn-danger mr-2"
+                   th:href="@{/deleteMovie/{id}(id=${c.id})}">delete</a>
             </td>
             <!--            <td>
                             <a class="btn btn-danger mr-2"
@@ -42,6 +46,36 @@
         </tbody>
     </table>
     <a class="btn btn-primary" href="/">Main Page</a>
+    <a class="btn btn-secondary" href="/addMultimedia">Add movie</a>
+    <button id="myBtn" class="btn btn-success">Search</button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
+                <fieldset>
+                    <legend>Choose criteria</legend>
+                    <hr>
+                    <form onsubmit='makePath(this);'>
+                        <select id="Opt">
+                            <option value='showOneMovie/25'>by genre</option>
+                            <option value='addCustomer/2'>by director</option>
+                            <option value='addCustomer/3'>by year</option>
+                        </select>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                            <button class="btn btn-success">Przejdź dalej</button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <script src="js/customersScript.js"></script>
+
 </div>
 
 

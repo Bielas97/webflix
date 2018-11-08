@@ -38,4 +38,8 @@ public class MultimediaService {
     public MultimediaDto getByGenre(String genre){
         return modelMapper.map(multimediaRepository.findByGenre(genre), MultimediaDto.class);
     }
+
+    public void deleteMultimedia(Long id){
+        multimediaRepository.deleteById(id);
+    }
 }
