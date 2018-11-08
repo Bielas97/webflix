@@ -1,11 +1,13 @@
 package com.app.webflix.controllers;
 
+import com.app.webflix.model.Content;
 import com.app.webflix.model.dto.MultimediaDto;
 import com.app.webflix.model.dto.UserDto;
 import com.app.webflix.model.enums.Role;
 import com.app.webflix.service.MultimediaService;
 import com.app.webflix.service.UserService;
 import org.apache.log4j.Logger;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +42,8 @@ public class BasicController {
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         LOGGER.debug("Index site returned");
+        UserDto userDto = userService.getByUsername(principal.getName());
+        userService.sendMessageAboutPayment(userDto);
         model.addAttribute("user", principal.getName());
         return "index";
     }
@@ -66,6 +70,7 @@ public class BasicController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         LOGGER.debug("Setting role");
         user.setRole(Role.USER);
+        userService.setPayment(user);
         userService.addOrUpdateUser(user);
         LOGGER.debug("Redirecting to /");
         return "redirect:/";
@@ -93,6 +98,11 @@ public class BasicController {
     @GetMapping("/showMovies")
     public String getAllContent(Model model) {
         LOGGER.debug("Showing page with all movies");
+        model.addAttribute("movies", multimediaService.getAll());
+        return "getAllMovies";
+    }
+    @GetMapping("/sortByNames")
+    public String getAllContentSortedByName(Model model) {
         model.addAttribute("movies", multimediaService.getAll());
         return "getAllMovies";
     }
@@ -208,4 +218,5 @@ public class BasicController {
         LOGGER.info("Access was denied");
         return "accessDenied";
     }
+
 }

@@ -12,14 +12,19 @@
 
 </div>
 <div class="col-8">
-
-    <table class="table table-striped">
+    <input type="text" id="genre" onkeyup="myFunctionGenre()" placeholder="Search by genre" title="Type in a genre">
+    <input type="text" id="director" onkeyup="myFunctiondDrector()" placeholder="Search by director"
+           title="Type in a director">
+    <input type="text" id="date" onkeyup="myFunctionDate()" placeholder="Search for by date"
+           title="Type in a director">
+    <table id="myTable" class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">name</th>
-            <th scope="col">genre</th>
-            <th scope="col">date of publication</th>
+            <th onclick="sortTable(0)" scope="col">id</th>
+            <th onclick="sortTable(1)" scope="col">name</th>
+            <th onclick="sortTable(2)" scope="col">genre</th>
+            <th onclick="sortTable(3)" scope="col">director</th>
+            <th onclick="sortTable(4)" scope="col">date of publication</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -28,6 +33,7 @@
             <td th:text="${c.id}"></td>
             <td th:text="${c.name}"></td>
             <td th:text="${c.genre}"></td>
+            <td th:text="${c.director}"></td>
             <td th:text="${c.dateTime}"></td>
             <td>
                 <a class="btn btn-primary mr-2"
@@ -45,40 +51,78 @@
         </tr>
         </tbody>
     </table>
+    <script>
+        function myFunctionGenre() {
+            // Declare variables
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("genre");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        function myFunctiondDrector() {
+            // Declare variables
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("director");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        function myFunctionDate() {
+            // Declare variables
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("date");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[4];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
     <a class="btn btn-primary" href="/">Main Page</a>
     <a class="btn btn-secondary" href="/addMultimedia">Add movie</a>
-    <button id="myBtn" class="btn btn-success">Search</button>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
-                <fieldset>
-                    <legend>Choose criteria</legend>
-                    <hr>
-                    <form onsubmit='makePath(this);'>
-                        <select id="Opt">
-                            <option value='showOneMovie/25'>by genre</option>
-                            <option value='addCustomer/2'>by director</option>
-                            <option value='addCustomer/3'>by year</option>
-                        </select>
-                        <br>
-                        <br>
-                        <div class="form-group">
-                            <button class="btn btn-success">Przejdź dalej</button>
-                        </div>
-                    </form>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-    <script src="js/customersScript.js"></script>
+    <a class="btn btn-warning" href="/sortByName">sort by name</a>
 
 </div>
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"

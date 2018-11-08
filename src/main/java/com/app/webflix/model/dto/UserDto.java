@@ -1,6 +1,7 @@
 package com.app.webflix.model.dto;
 
 import com.app.webflix.model.entity.Multimedia;
+import com.app.webflix.model.entity.Payment;
 import com.app.webflix.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class UserDto {
     private String creditCard;
     private Role role;
     private LocalDateTime dateTime;
+    private PaymentDto payment;
 
     private List<MultimediaDto> watchList;
 
