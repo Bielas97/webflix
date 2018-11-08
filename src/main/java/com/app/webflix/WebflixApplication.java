@@ -3,6 +3,8 @@ package com.app.webflix;
 import com.app.webflix.model.entity.User;
 import com.app.webflix.model.enums.Role;
 import com.app.webflix.repository.UserRepository;
+
+import org.apache.log4j.Logger;
 import com.app.webflix.service.EmailServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,22 +17,24 @@ import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class WebflixApplication implements CommandLineRunner {
-	private UserRepository userRepository;
-	private PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+    private static final Logger LOGGER = Logger.getLogger(WebflixApplication.class);
 
-	public WebflixApplication(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
+    public WebflixApplication(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(WebflixApplication.class, args);
-	}
+    public static void main(String[] args) {
+        LOGGER.info("Server started...");
+        SpringApplication.run(WebflixApplication.class, args);
+    }
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 	@Override
 	public void run(String... args) throws Exception {
