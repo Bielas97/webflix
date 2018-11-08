@@ -115,7 +115,7 @@ public class UserService {
     }
 
     public void sendMessageAboutPayment(UserDto userDto){
-        if(userDto.getPayment().getDueDate().isAfter(LocalDateTime.now()) && !userDto.getPayment().getIsPaid()){
+        if( userDto.getPayment() != null && userDto.getPayment().getDueDate().isAfter(LocalDateTime.now()) && !userDto.getPayment().getIsPaid()){
             emailService.sendSimpleMessage(userDto.getUsername(), "WEBFLIX", "Your account is expired, please pay 99.99 US $");
         }
     }
