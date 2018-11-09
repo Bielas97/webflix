@@ -52,14 +52,16 @@ public class MultimediaService {
         multimediaRepository.deleteById(id);
     }
 
-    /*public List<MultimediaDto> sortByNames(){
-        return multimediaRepository.findAllOrderByName()
+    public List<MultimediaDto> sortByNames(String name){
+        LOGGER.info("Sorting by names");
+        return multimediaRepository.findAllOrOrderByName(name)
                 .stream()
                 .map(multimedia -> modelMapper.map(multimedia, MultimediaDto.class))
                 .collect(Collectors.toList());
-    }*/
+    }
 
     public List<MultimediaDto> sortByGenre(String genre){
+        LOGGER.info("Sorting by genre");
         return multimediaRepository.findAllOrOrderByGenre(genre)
                 .stream()
                 .map(multimedia -> modelMapper.map(multimedia, MultimediaDto.class))
@@ -67,6 +69,7 @@ public class MultimediaService {
     }
 
     public List<MultimediaDto> sortByDirector(String director){
+        LOGGER.info("Sorting by director");
         return multimediaRepository.findAllOrOrderByDirector(director)
                 .stream()
                 .map(multimedia -> modelMapper.map(multimedia, MultimediaDto.class))
