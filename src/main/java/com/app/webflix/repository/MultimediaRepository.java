@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface MultimediaRepository extends JpaRepository<Multimedia, Long> {
     Multimedia findByGenre(String genre);
+
     List<Multimedia> findAllOrOrderByName(String name);
     List<Multimedia> findAllOrOrderByGenre(String genre);
     List<Multimedia> findAllOrOrderByDirector(String director);

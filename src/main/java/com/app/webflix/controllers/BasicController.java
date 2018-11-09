@@ -134,7 +134,21 @@ public class BasicController {
 
     @GetMapping("/sortByNames")
     public String getAllContentSortedByName(Model model) {
-        model.addAttribute("movies", multimediaService.getAll());
+        List<MultimediaDto> sortedByNames = multimediaService.getAll()
+                .stream()
+                .sorted(Comparator.comparing(MultimediaDto::getName))
+                .collect(Collectors.toList());
+        model.addAttribute("movies", sortedByNames);
+        return "getAllMovies";
+    }
+
+    @GetMapping("/sortByNamesDescending")
+    public String getAllContentSortedByNameDescending(Model model) {
+        List<MultimediaDto> sortedByNames = multimediaService.getAll()
+                .stream()
+                .sorted((m1, m2) -> m2.getName().compareTo(m1.getName()))
+                .collect(Collectors.toList());
+        model.addAttribute("movies", sortedByNames);
         return "getAllMovies";
     }
 

@@ -52,12 +52,12 @@ public class MultimediaService {
         multimediaRepository.deleteById(id);
     }
 
-    public List<MultimediaDto> sortByNames(String name){
-        return multimediaRepository.findAllOrOrderByName(name)
+    /*public List<MultimediaDto> sortByNames(){
+        return multimediaRepository.findAllOrderByName()
                 .stream()
                 .map(multimedia -> modelMapper.map(multimedia, MultimediaDto.class))
                 .collect(Collectors.toList());
-    }
+    }*/
 
     public List<MultimediaDto> sortByGenre(String genre){
         return multimediaRepository.findAllOrOrderByGenre(genre)
