@@ -58,6 +58,7 @@ public class BasicController {
 
     @GetMapping("/login/error")
     public String loginError(Model model) {
+        LOGGER.info("User inputted wrong credentials");
         final String loginErrorMessage = "Nieprawidłowe dane logowania";
         model.addAttribute("error", loginErrorMessage);
         return "loginForm";
@@ -134,21 +135,8 @@ public class BasicController {
 
     @GetMapping("/sortByNames")
     public String getAllContentSortedByName(Model model) {
-        List<MultimediaDto> sortedByNames = multimediaService.getAll()
-                .stream()
-                .sorted(Comparator.comparing(MultimediaDto::getName))
-                .collect(Collectors.toList());
-        model.addAttribute("movies", sortedByNames);
-        return "getAllMovies";
-    }
-
-    @GetMapping("/sortByNamesDescending")
-    public String getAllContentSortedByNameDescending(Model model) {
-        List<MultimediaDto> sortedByNames = multimediaService.getAll()
-                .stream()
-                .sorted((m1, m2) -> m2.getName().compareTo(m1.getName()))
-                .collect(Collectors.toList());
-        model.addAttribute("movies", sortedByNames);
+        LOGGER.debug("getting all content sorted by name");
+        model.addAttribute("movies", multimediaService.getAll());
         return "getAllMovies";
     }
 
@@ -161,7 +149,6 @@ public class BasicController {
 
     @PostMapping("/addMultimedia")
     public String addMultimediaPost(@ModelAttribute MultimediaDto multimediaDto) {
-        System.out.println("=++++++++++++++++++++++++++");
         LOGGER.debug("Setting date of creation of multimedia");
         multimediaDto.setDateTime(LocalDateTime.now());
         multimediaService.addOrUpdateMultimedia(multimediaDto);
@@ -170,9 +157,8 @@ public class BasicController {
 
     @GetMapping("/showMovie/{id}")
     public String showOneMovie(@PathVariable Long id, Model model, Principal principal) {
-        model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
-        System.out.println(multimediaService.getOneMultimedia(id).get());
-        multimediaService.getOneMultimedia(id).ifPresent(multimediaDto -> {
+        LOGGER.info("Showing one movie: "+ multimediaService.getOneMultimedia(id).get());
+        model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());multimediaService.getOneMultimedia(id).ifPresent(multimediaDto -> {
             UserDto userDto = userService.getByUsername(principal.getName());
             userService.addSuggestedContent(multimediaDto, userDto, favouriteGenres);
         });
@@ -181,12 +167,14 @@ public class BasicController {
 
     @GetMapping("/updateMovie/{id}")
     public String updateMovie(@PathVariable Long id, Model model) {
+        LOGGER.info("Redirecting to movie update page");
         model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
         return "updateMovie";
     }
 
     @PostMapping("/updateMovie")
     public String updateMoviePost(MultimediaDto multimediaDto) {
+        LOGGER.debug("Movie update request");
         multimediaDto.setDateTime(LocalDateTime.now());
         multimediaService.addOrUpdateMultimedia(multimediaDto);
         return "redirect:/showMovies";
@@ -194,21 +182,23 @@ public class BasicController {
 
     @GetMapping("/deleteMovie/{id")
     public String deleteMovie(@PathVariable Long id) {
+        LOGGER.info("Redirecting to movie deletion page");
         multimediaService.deleteMultimedia(id);
         return "redirect:/showMovies";
     }
 
     @GetMapping("/movie/toWatchlist/{id}")
     public String addToWatchList(@PathVariable Long id, Principal principal) {
-        System.out.println("+++++++++++");
+        LOGGER.info("Redirecting to movie watchlist details page");
         UserDto userDto = userService.getByUsername(principal.getName());
         multimediaService.getOneMultimedia(id).ifPresent(multimediaDto1 -> userService.addToWatchList(userDto, multimediaDto1));
-        System.out.println(userDto);
+        LOGGER.debug(userDto);
         return "redirect:/showMovies";
     }
 
     @GetMapping("/deleteUser")
     public String deleteUser(Model model) {
+        LOGGER.info("Redirecting to user deletion page");
         model.addAttribute("user", new UserDto());
         return "deleteUser";
     }
@@ -220,16 +210,18 @@ public class BasicController {
                 .stream()
                 .filter(us -> us.getUsername().equals(userDto.getUsername()) && us.getPassword().equals(userDto.getPassword()))
                 .findFirst();
-        System.out.println("tu powinno");
         user.ifPresent(System.out::println);
         return "redirect:/";
     }
 
     @GetMapping("/suggestedContent")
     public String showSuggestedContent(Model model, Principal principal) {
+        LOGGER.info("Redirecting to suggested content page");
         if (favouriteGenres == null || favouriteGenres.get(userService.getByUsername(principal.getName())) == null) {
+            LOGGER.debug("User has not browsed movies");
             model.addAttribute("isnull", true);
         } else {
+            LOGGER.debug("Getting suggested content, it exists");
             model.addAttribute("isnull", false);
             model.addAttribute("suggestedMovies", favouriteGenres.get(userService.getByUsername(principal.getName())));
         }
@@ -253,7 +245,7 @@ public class BasicController {
 
     @GetMapping("/remove/from/watchlist/{id}")
     public String removeWatchList(@PathVariable Long id, Principal principal) {
-
+        LOGGER.info("Deleting movie with id:"+ id +" from the watchlist.");
         userService.deleteFromWatchList(userService.getByUsername(principal.getName()), id);
         return "redirect:/";
     }

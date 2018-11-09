@@ -83,14 +83,18 @@ public class UserService {
     }
 
     public void addSuggestedContent(MultimediaDto multimediaDto, UserDto userDto, Map<UserDto, Set<MultimediaDto>> favouriteGenres) {
+        LOGGER.info("Adding item to suggested content: "+multimediaDto.getName());
         if (favouriteGenres == null) {
+            LOGGER.debug("No suggested content, creating hashmap");
             favouriteGenres = new HashMap<>();
         }
         if (favouriteGenres.get(userDto) == null || favouriteGenres.get(userDto).isEmpty()) {
+            LOGGER.debug("No suggested content for this user, creating hashmap");
             Set<MultimediaDto> multimediaGenre = new HashSet<>();
             multimediaGenre.add(multimediaDto);
             favouriteGenres.put(userDto, multimediaGenre);
         } else {
+            LOGGER.debug("Suggested content exists, adding more.");
             Set<MultimediaDto> multimediaGenre = favouriteGenres.get(userDto);
             multimediaGenre.add(multimediaDto);
             favouriteGenres.put(userDto, multimediaGenre);
@@ -105,6 +109,7 @@ public class UserService {
     }
 
     public void setPayment(UserDto user) {
+        LOGGER.debug("Setting payments for user: "+user.getUsername());
         PaymentDto paymentDto = PaymentDto.builder()
                 .value(99.99)
                 .dueDate(LocalDateTime.now().plusDays(1))
@@ -115,15 +120,16 @@ public class UserService {
     }
 
     public void sendMessageAboutPayment(UserDto userDto){
+        LOGGER.debug("Sending payment message for "+userDto.getUsername());
         if( userDto.getPayment() != null && userDto.getPayment().getDueDate().isAfter(LocalDateTime.now()) && !userDto.getPayment().getIsPaid()){
             emailService.sendSimpleMessage(userDto.getUsername(), "WEBFLIX", "Your account is expired, please pay 99.99 US $");
         }
     }
 
     public boolean isUsernameInDb(String username) {
+        LOGGER.debug("Checking if username is in database");
         return getAll()
                 .stream()
                 .anyMatch(userDto -> userDto.getUsername().equals(username));
     }
-
 }
