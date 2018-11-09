@@ -1,10 +1,7 @@
 package com.app.webflix.model.entity;
 
 import com.app.webflix.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,5 +32,6 @@ public class User {
     private List<Multimedia> watchList;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "payment_id")
+    @EqualsAndHashCode.Exclude
     private Payment payment;
 }

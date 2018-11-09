@@ -1,21 +1,21 @@
 package com.app.webflix.controllers;
 
-import com.app.webflix.model.Content;
 import com.app.webflix.model.dto.MultimediaDto;
 import com.app.webflix.model.dto.UserDto;
 import com.app.webflix.model.enums.Role;
 import com.app.webflix.service.MultimediaService;
 import com.app.webflix.service.UserService;
+import com.app.webflix.validators.UserValidator;
 import org.apache.log4j.Logger;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -30,6 +30,7 @@ public class BasicController {
     private static final Logger LOGGER = Logger.getLogger(BasicController.class);
 
     Map<UserDto, Set<MultimediaDto>> favouriteGenres = new HashMap<>();
+
 
     public BasicController(UserService userService, PasswordEncoder passwordEncoder, MultimediaService multimediaService) {
         LOGGER.debug("Creating BasicController object");
@@ -55,44 +56,73 @@ public class BasicController {
         return "loginForm";
     }
 
+    @GetMapping("/login/error")
+    public String loginError(Model model) {
+        final String loginErrorMessage = "Nieprawidłowe dane logowania";
+        model.addAttribute("error", loginErrorMessage);
+        return "loginForm";
+    }
+
 
     @GetMapping("/register")
     public String registerUser(Model model) {
         LOGGER.info("Redirecting to register page");
         model.addAttribute("user", new UserDto());
+        model.addAttribute("error", false);
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUserPost(@ModelAttribute UserDto user, Model model) {
-        LOGGER.info("Registering user");
-        LOGGER.debug("Setting password");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        LOGGER.debug("Setting role");
-        user.setRole(Role.USER);
-        userService.setPayment(user);
-        userService.addOrUpdateUser(user);
-        LOGGER.debug("Redirecting to /");
-        return "redirect:/";
+        System.out.println(userService.isUsernameInDb(user.getUsername()));
+        if(userService.isUsernameInDb(user.getUsername())){
+            LOGGER.info("Redirecting to register page");
+            model.addAttribute("user", new UserDto());
+            model.addAttribute("error", true);
+            return "register";
+        }
+        else {
+
+            LOGGER.info("Registering user");
+            LOGGER.debug("Setting password");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            LOGGER.debug("Setting role");
+            user.setRole(Role.USER);
+            userService.setPayment(user);
+            userService.addOrUpdateUser(user);
+            LOGGER.debug("Redirecting to /");
+            return "redirect:/";
+        }
+
     }
 
     @GetMapping("/admin/registration")
     public String registerAdmin(Model model) {
         LOGGER.info("Redirecting to admin register page");
         model.addAttribute("user", new UserDto());
-        return "register";
+        model.addAttribute("error", false);
+        return "registerAdmin";
     }
 
     @PostMapping("/admin/registration")
     public String registerAdminPost(@ModelAttribute UserDto user, Model model) {
-        LOGGER.info("Registering admin");
-        LOGGER.debug("Setting admin's password");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        LOGGER.debug("Setting admin's role");
-        user.setRole(Role.ADMIN);
-        System.out.println(user);
-        userService.addOrUpdateUser(user);
-        return "redirect:/";
+        if(userService.isUsernameInDb(user.getUsername())){
+            LOGGER.info("Redirecting to admin register page");
+            model.addAttribute("user", new UserDto());
+            model.addAttribute("error", false);
+            model.addAttribute("error", true);
+            return "registerAdmin";
+        }
+        else {
+            LOGGER.info("Registering admin");
+            LOGGER.debug("Setting admin's password");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            LOGGER.debug("Setting admin's role");
+            user.setRole(Role.ADMIN);
+            System.out.println(user);
+            userService.addOrUpdateUser(user);
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/showMovies")
@@ -101,6 +131,7 @@ public class BasicController {
         model.addAttribute("movies", multimediaService.getAll());
         return "getAllMovies";
     }
+
     @GetMapping("/sortByNames")
     public String getAllContentSortedByName(Model model) {
         model.addAttribute("movies", multimediaService.getAll());
@@ -126,6 +157,7 @@ public class BasicController {
     @GetMapping("/showMovie/{id}")
     public String showOneMovie(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
+        System.out.println(multimediaService.getOneMultimedia(id).get());
         multimediaService.getOneMultimedia(id).ifPresent(multimediaDto -> {
             UserDto userDto = userService.getByUsername(principal.getName());
             userService.addSuggestedContent(multimediaDto, userDto, favouriteGenres);
@@ -134,26 +166,26 @@ public class BasicController {
     }
 
     @GetMapping("/updateMovie/{id}")
-    public String updateMovie(@PathVariable Long id, Model model){
-        model.addAttribute("movie",multimediaService.getOneMultimedia(id));
+    public String updateMovie(@PathVariable Long id, Model model) {
+        model.addAttribute("movie", multimediaService.getOneMultimedia(id).get());
         return "updateMovie";
     }
 
     @PostMapping("/updateMovie")
-    public String updateMoviePost(MultimediaDto multimediaDto){
+    public String updateMoviePost(MultimediaDto multimediaDto) {
         multimediaDto.setDateTime(LocalDateTime.now());
         multimediaService.addOrUpdateMultimedia(multimediaDto);
         return "redirect:/showMovies";
     }
 
     @GetMapping("/deleteMovie/{id")
-    public String deleteMovie(@PathVariable Long id){
+    public String deleteMovie(@PathVariable Long id) {
         multimediaService.deleteMultimedia(id);
         return "redirect:/showMovies";
     }
 
     @GetMapping("/movie/toWatchlist/{id}")
-    public String addToWatchList(@PathVariable Long id, Principal principal){
+    public String addToWatchList(@PathVariable Long id, Principal principal) {
         System.out.println("+++++++++++");
         UserDto userDto = userService.getByUsername(principal.getName());
         multimediaService.getOneMultimedia(id).ifPresent(multimediaDto1 -> userService.addToWatchList(userDto, multimediaDto1));
@@ -191,14 +223,13 @@ public class BasicController {
     }
 
     @GetMapping("/watchList")
-    public String showWatchList(Model model, Principal principal){
+    public String showWatchList(Model model, Principal principal) {
         LOGGER.info("Showing watchlist page");
         UserDto userDto = userService.getByUsername(principal.getName());
-        if(userDto.getWatchList() == null || userDto.getWatchList().isEmpty()){
+        if (userDto.getWatchList() == null || userDto.getWatchList().isEmpty()) {
             LOGGER.debug("watchlist is null or empty");
             model.addAttribute("isnull", true);
-        }
-        else {
+        } else {
             LOGGER.debug("There is something in the watchlist");
             model.addAttribute("movies", userDto.getWatchList());
             model.addAttribute("isnull", false);
@@ -207,7 +238,7 @@ public class BasicController {
     }
 
     @GetMapping("/remove/from/watchlist/{id}")
-    public String removeWatchList(@PathVariable Long id, Principal principal){
+    public String removeWatchList(@PathVariable Long id, Principal principal) {
 
         userService.deleteFromWatchList(userService.getByUsername(principal.getName()), id);
         return "redirect:/";

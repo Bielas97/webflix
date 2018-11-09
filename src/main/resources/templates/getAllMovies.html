@@ -120,6 +120,11 @@
 
     <a class="btn btn-primary" href="/">Main Page</a>
     <a class="btn btn-secondary" href="/addMultimedia">Add movie</a>
+    <div>
+        <form th:action="@{/app-logout}" method="post">
+            <input class="btn btn-danger" type="submit" value="Log out" />
+        </form>
+    </div>
    <!-- <a class="btn btn-warning" href="/sortByName">sort by name</a>-->
 
 </div>

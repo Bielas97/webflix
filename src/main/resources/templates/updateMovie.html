@@ -44,6 +44,11 @@
                     <input class="btn btn-danger" type="reset" value="Reset"/>
                     <a class="btn btn-primary" href="/">Main Page</a>
                 </div>
+                <div>
+                    <form th:action="@{/app-logout}" method="post">
+                        <input class="btn btn-danger" type="submit" value="Log out" />
+                    </form>
+                </div>
             </form>
         </div>
     </div>

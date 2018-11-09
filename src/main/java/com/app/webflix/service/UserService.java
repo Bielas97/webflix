@@ -120,4 +120,9 @@ public class UserService {
         }
     }
 
+    public boolean isUsernameInDb(String username) {
+        return getAll()
+                .stream()
+                .anyMatch(userDto -> userDto.getUsername().equals(username));
+    }
 }

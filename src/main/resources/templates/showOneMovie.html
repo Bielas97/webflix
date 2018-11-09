@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 </head>
-<a>
 
 <table class="table table-striped">
     <thead>
@@ -17,9 +16,8 @@
         <th scope="col">genre</th>
         <th scope="col">date of publication</th>
         <th scope="col">description</th>
-        <th scope="col">rating</th>
         <th scope="col">episode number</th>
-        <th scope="col">director</th>
+        <th scope="col">rating</th>
     </tr>
     </thead>
     <tbody>
@@ -28,14 +26,19 @@
         <td th:text="${movie.name}"></td>
         <td th:text="${movie.genre}"></td>
         <td th:text="${movie.dateTime}"></td>
-        <td th:text="${movie.rating}"></td>
+        <td th:text="${movie.description}"></td>
         <td th:text="${movie.episodeNumber}"></td>
-        <td th:text="${movie.director}"></td>
+        <td th:text="${movie.rating}"></td>
     </tr>
     </tbody>
 </table>
 <a class="btn btn-primary" href="/">Main Page</a>
 <a class="btn btn-success" th:href="@{/movie/toWatchlist/{id}(id=${movie.id})}">Add to watch list</a>
+<div>
+    <form th:action="@{/app-logout}" method="post">
+        <input class="btn btn-danger" type="submit" value="Log out"/>
+    </form>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"

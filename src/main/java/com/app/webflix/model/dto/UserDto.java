@@ -3,10 +3,7 @@ package com.app.webflix.model.dto;
 import com.app.webflix.model.entity.Multimedia;
 import com.app.webflix.model.entity.Payment;
 import com.app.webflix.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +19,7 @@ public class UserDto {
     private String creditCard;
     private Role role;
     private LocalDateTime dateTime;
+    @EqualsAndHashCode.Exclude
     private PaymentDto payment;
 
     private List<MultimediaDto> watchList;

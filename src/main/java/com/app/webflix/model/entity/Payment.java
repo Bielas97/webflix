@@ -1,9 +1,6 @@
 package com.app.webflix.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,5 +21,6 @@ public class Payment {
     private Boolean isPaid;
     private LocalDateTime dueDate;
     @OneToOne(mappedBy = "payment")
+    @EqualsAndHashCode.Exclude
     private User user;
 }

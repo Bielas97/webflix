@@ -9,35 +9,43 @@
 </head>
 <body>
 
-
 <div class="container">
     <div class="row">
         <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-8 offset-sm-2">
-            <h2 class="mt-5">Register</h2>
-            <form th:action="@{/admin/registration}" method="post" th:object="${user}">
-                <div class="form-group">
-                    <label class="h3" for="name">Mail:</label>
-                    <input id="name" class="form-control" type="text" th:field="*{username}"/>
-                </div>
-                <div class="form-group">
-                    <label class="h3" for="surname">Password:</label>
-                    <input id="surname" class="form-control" type="password" th:field="*{password}"/>
-                </div>
-                <div class="form-group">
-                    <label class="h3" for="numberOfTickets">Credit Card</label>
-                    <input id="numberOfTickets" class="form-control" type="number" th:field="*{creditCard}"/>
-                </div>
-                <div>
-                    <input class="btn btn-success" type="submit" value="Register"/>
-                    <input class="btn btn-danger" type="reset" value="Reset"/>
-                    <a class="btn btn-primary" href="/">Main Page</a>
-                </div>
-            </form>
+            <div th:if="${!error}">
+                <h2 class="mt-5">Register</h2>
+                <form th:action="@{/admin/registration}" method="post" th:object="${user}">
+                    <div class="form-group">
+                        <label class="h3" for="name">Mail:</label>
+                        <input id="name" class="form-control" type="text" th:field="*{username}"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="h3" for="surname">Password:</label>
+                        <input id="surname" class="form-control" type="password" th:field="*{password}"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="h3" for="numberOfTickets">Credit Card</label>
+                        <input id="numberOfTickets" class="form-control" type="number" th:field="*{creditCard}"/>
+                    </div>
+                    <div>
+                        <input class="btn btn-success" type="submit" value="Register"/>
+                        <input class="btn btn-danger" type="reset" value="Reset"/>
+                        <a class="btn btn-primary" href="/">Main Page</a>
+                    </div>
+                    <div>
+                        <form th:action="@{/app-logout}" method="post">
+                            <input class="btn btn-danger" type="submit" value="Log out"/>
+                        </form>
+                    </div>
+                </form>
+            </div>
+            <div th:if="${error}">
+                <h3>There is already this username</h3>
+                <a class="btn btn-primary" href="/register">return</a>
+            </div>
         </div>
     </div>
 </div>
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
