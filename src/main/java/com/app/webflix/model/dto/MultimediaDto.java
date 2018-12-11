@@ -2,6 +2,7 @@ package com.app.webflix.model.dto;
 
 import com.app.webflix.model.entity.User;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,5 +23,7 @@ public class MultimediaDto {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<User> users;
+    private MultipartFile multipartFile;
+    private String filename;
 
 }

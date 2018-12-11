@@ -136,7 +136,22 @@ public class BasicController {
     @GetMapping("/sortByNames")
     public String getAllContentSortedByName(Model model) {
         LOGGER.debug("getting all content sorted by name");
-        model.addAttribute("movies", multimediaService.getAll());
+        List<MultimediaDto> multimediaDtos = multimediaService.getAll()
+                .stream()
+                .sorted(Comparator.comparing(MultimediaDto::getName))
+                .collect(Collectors.toList());
+        model.addAttribute("movies", multimediaDtos);
+        return "getAllMovies";
+    }
+
+    @GetMapping("/sortByNamesDescending")
+    public String getAllContentSortedByNameDescending(Model model) {
+        LOGGER.debug("getting all content sorted by name");
+        List<MultimediaDto> multimediaDtos = multimediaService.getAll()
+                .stream()
+                .sorted((m1, m2) -> m2.getName().compareTo(m1.getName()))
+                .collect(Collectors.toList());
+        model.addAttribute("movies", multimediaDtos);
         return "getAllMovies";
     }
 
@@ -163,6 +178,21 @@ public class BasicController {
             userService.addSuggestedContent(multimediaDto, userDto, favouriteGenres);
         });
         return "showOneMovie";
+    }
+
+    @GetMapping("/user/update")
+    public String updateUser(Model model, Principal principal){
+        LOGGER.debug("updating user data...");
+        model.addAttribute("user", userService.getByUsername(principal.getName()));
+        model.addAttribute("error", false);
+        return "updateUser";
+    }
+
+    @PostMapping("/user/update")
+    public String updateUserPost(@ModelAttribute UserDto userDto){
+        LOGGER.debug("user update request");
+        userService.addOrUpdateUser(userDto);
+        return "redirect:/";
     }
 
     @GetMapping("/updateMovie/{id}")
@@ -210,6 +240,12 @@ public class BasicController {
                 .stream()
                 .filter(us -> us.getUsername().equals(userDto.getUsername()) && us.getPassword().equals(userDto.getPassword()))
                 .findFirst();
+        System.out.println(userDto);
+        List<UserDto> usersWithUsername = userService.getAll().stream()
+                .filter(userDto1 -> userDto1.getUsername().equals(userDto.getUsername()) /*&& userDto1.getPassword().equals(userDto.getPassword())*/)
+                .collect(Collectors.toList());
+        System.out.println(usersWithUsername.get(0).getId());
+        System.out.println("----------------------");
         user.ifPresent(System.out::println);
         return "redirect:/";
     }
